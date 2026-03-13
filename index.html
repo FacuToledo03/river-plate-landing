@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Atlético River Plate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rojo: #CC0000;
+      --blanco: #FFFFFF;
+      --negro: #0A0A0A;
+      --gris: #1a1a1a;
+      --gris-suave: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--negro);
+      color: var(--blanco);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(204,0,0,0.2);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      color: var(--blanco);
+    }
+    .nav-logo span { color: var(--rojo); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--gris-suave);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--rojo); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(204,0,0,0.18) 0%, transparent 70%),
+        linear-gradient(180deg, #0A0A0A 0%, #111 100%);
+    }
+
+    /* Banda diagonal */
+    .hero-banda {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-banda::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 30%;
+      width: 22px;
+      height: 200%;
+      background: rgba(204,0,0,0.07);
+      transform: rotate(-12deg);
+      box-shadow: 40px 0 0 rgba(204,0,0,0.04), -40px 0 0 rgba(204,0,0,0.04);
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-escudo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 2rem;
+      animation: flotar 4s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* SVG Escudo simple */
+    .escudo-svg circle { }
+
+    .hero-pretitulo {
+      font-size: 0.75rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--rojo);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-titulo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      color: var(--blanco);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+    }
+
+    .hero-titulo .rojo { color: var(--rojo); }
+
+    .hero-subtitulo {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--gris-suave);
+      font-style: italic;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s forwards;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 0.9rem 2.5rem;
+      background: var(--rojo);
+      color: var(--blanco);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--rojo);
+      transition: background 0.2s, color 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .hero-btn:hover {
+      background: transparent;
+      color: var(--rojo);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STATS */
+    .stats {
+      background: var(--rojo);
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1.5rem;
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--blanco);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.4rem;
+      font-weight: 600;
+    }
+
+    /* HISTORIA */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--rojo);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      margin-bottom: 2rem;
+    }
+
+    .section-body {
+      color: #aaa;
+      line-height: 1.8;
+      font-size: 1.05rem;
+      max-width: 650px;
+    }
+
+    /* PALMARÉS */
+    .palmares {
+      background: var(--gris);
+      padding: 5rem 2rem;
+    }
+
+    .palmares-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .trofeos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .trofeo-card {
+      background: var(--negro);
+      border: 1px solid rgba(204,0,0,0.2);
+      padding: 2rem 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .trofeo-card:hover {
+      border-color: var(--rojo);
+      transform: translateY(-4px);
+    }
+
+    .trofeo-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--rojo);
+      line-height: 1;
+    }
+
+    .trofeo-nombre {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      color: var(--blanco);
+    }
+
+    .trofeo-desc {
+      font-size: 0.85rem;
+      color: var(--gris-suave);
+      margin-top: 0.4rem;
+    }
+
+    /* ESTADIO */
+    .estadio-section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .estadio-visual {
+      background: var(--gris);
+      border: 1px solid rgba(204,0,0,0.2);
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .estadio-pattern {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(204,0,0,0.04) 10px,
+        rgba(204,0,0,0.04) 20px
+      );
+    }
+
+    .estadio-nombre-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: rgba(255,255,255,0.08);
+      position: absolute;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .estadio-icon {
+      font-size: 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* HIMNO */
+    .himno {
+      background: var(--negro);
+      border-top: 1px solid rgba(204,0,0,0.15);
+      border-bottom: 1px solid rgba(204,0,0,0.15);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .himno-texto {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3.5rem);
+      color: var(--blanco);
+      letter-spacing: 3px;
+      line-height: 1.4;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .himno-texto .rojo { color: var(--rojo); }
+
+    /* FOOTER */
+    footer {
+      background: var(--negro);
+      border-top: 1px solid #222;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 4px;
+    }
+    .footer-logo span { color: var(--rojo); }
+
+    .footer-sub {
+      font-size: 0.8rem;
+      color: var(--gris-suave);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: #333;
+      margin-top: 2rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { display: none; }
+      .estadio-section { grid-template-columns: 1fr; gap: 2rem; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">River <span>Plate</span></div>
+    <ul class="nav-links">
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#palmares">Palmarés</a></li>
+      <li><a href="#estadio">Estadio</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-banda"></div>
+    <div class="hero-content">
+
+      <!-- Escudo SVG simple -->
+      <svg class="hero-escudo" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 8 L110 30 L110 75 Q110 105 60 115 Q10 105 10 75 L10 30 Z" fill="#CC0000" stroke="#fff" stroke-width="2"/>
+        <path d="M60 18 L100 36 L100 73 Q100 98 60 107 Q20 98 20 73 L20 36 Z" fill="#FFFFFF"/>
+        <!-- Banda roja diagonal -->
+        <path d="M28 85 L40 85 L90 35 L78 35 Z" fill="#CC0000"/>
+        <!-- Letras CARP -->
+        <text x="60" y="100" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="#CC0000" letter-spacing="1">CARP</text>
+      </svg>
+
+      <p class="hero-pretitulo">Club Atlético</p>
+      <h1 class="hero-titulo">RIVER<br><span class="rojo">PLATE</span></h1>
+      <p class="hero-subtitulo">El más grande de la Argentina · Desde 1901</p>
+      <a href="#historia" class="hero-btn">Conocé el club</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">37</div>
+      <div class="stat-label">Títulos Nacionales</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Copa Libertadores</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Intercontinentales</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">84.567</div>
+      <div class="stat-label">Socios</div>
+    </div>
+  </div>
+
+  <!-- HISTORIA -->
+  <section class="section" id="historia">
+    <p class="section-label">Fundación 1901</p>
+    <h2 class="section-title">Una historia de grandeza</h2>
+    <p class="section-body">
+      El Club Atlético River Plate nació el 25 de mayo de 1901 en el barrio de La Boca, Buenos Aires. Fundado por un grupo de jóvenes inmigrantes apasionados por el fútbol, el club creció hasta convertirse en uno de los más importantes y exitosos del mundo.
+      <br><br>
+      Con sus colores blanco y rojo —la icónica banda diagonal—, River es símbolo de elegancia, juego ofensivo y títulos. Su apodo <em>"Los Millonarios"</em> nació por las grandes contrataciones que realizó a lo largo de su historia.
+    </p>
+  </section>
+
+  <!-- PALMARÉS -->
+  <div class="palmares" id="palmares">
+    <div class="palmares-inner">
+      <p class="section-label">Títulos</p>
+      <h2 class="section-title">Palmarés</h2>
+      <div class="trofeos-grid">
+        <div class="trofeo-card">
+          <div class="trofeo-num">37</div>
+          <div class="trofeo-nombre">Torneos de Primera División</div>
+          <div class="trofeo-desc">El club con más títulos del fútbol argentino</div>
+        </div>
+        <div class="trofeo-card">
+          <div class="trofeo-num">4</div>
+          <div class="trofeo-nombre">Copa Libertadores</div>
+          <div class="trofeo-desc">1986, 1996, 2015 y la histórica de Madrid 2018</div>
+        </div>
+        <div class="trofeo-card">
+          <div class="trofeo-num">3</div>
+          <div class="trofeo-nombre">Copa Intercontinental</div>
+          <div class="trofeo-desc">1986, 1987 y 1996 ante los campeones de Europa</div>
+        </div>
+        <div class="trofeo-card">
+          <div class="trofeo-num">14</div>
+          <div class="trofeo-nombre">Copas Nacionales</div>
+          <div class="trofeo-desc">Copa Argentina y Supercopa Argentina</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADIO -->
+  <section class="estadio-section" id="estadio">
+    <div>
+      <p class="section-label">Núñez, Buenos Aires</p>
+      <h2 class="section-title">El Monumental</h2>
+      <p class="section-body">
+        El Estadio Monumental Antonio Vespucio Liberti, con capacidad para más de 84.000 personas, es el estadio más grande de Sudamérica. Hogar de River y sede de múltiples finales históricas, incluyendo la Copa del Mundo Argentina 1978.
+        <br><br>
+        En 2018 fue el escenario de la histórica Final de la Copa Libertadores entre River y Boca —trasladada a Madrid— que quedó grabada para siempre en la memoria colectiva.
+      </p>
+    </div>
+    <div class="estadio-visual">
+      <div class="estadio-pattern"></div>
+      <div class="estadio-nombre-big">MONUMENTAL</div>
+      <div class="estadio-icon">🏟️</div>
+    </div>
+  </section>
+
+  <!-- HIMNO -->
+  <div class="himno">
+    <p class="himno-texto">
+      "RIVER, <span class="rojo">RIVER</span> MI CORAZÓN,<br>
+      VOY A CANTAR CON EMOCIÓN<br>
+      A MI QUERIDO <span class="rojo">RIVER PLATE</span>"
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">River <span>Plate</span></div>
+    <p class="footer-sub">Club Atlético River Plate · Buenos Aires, Argentina</p>
+    <p class="footer-copy">Página de fan · No oficial · 2025</p>
+  </footer>
+
+</body>
+</html>
