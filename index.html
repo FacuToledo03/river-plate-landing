@@ -298,41 +298,35 @@
     }
 
     .estadio-visual {
-      background: var(--gris);
-      border: 1px solid rgba(204,0,0,0.2);
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      border: 1px solid rgba(204,0,0,0.3);
+      height: 320px;
       overflow: hidden;
-    }
-
-    .estadio-pattern {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 10px,
-        rgba(204,0,0,0.04) 10px,
-        rgba(204,0,0,0.04) 20px
-      );
-    }
-
-    .estadio-nombre-big {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3rem;
-      color: rgba(255,255,255,0.08);
-      position: absolute;
-      text-align: center;
-      line-height: 1.1;
-    }
-
-    .estadio-icon {
-      font-size: 4rem;
       position: relative;
-      z-index: 2;
+    }
+
+    .estadio-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .estadio-visual:hover img {
+      transform: scale(1.04);
+    }
+
+    .estadio-visual-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      padding: 1rem 1.2rem 0.8rem;
+    }
+
+    .estadio-visual-caption {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 1px;
     }
 
     /* HIMNO */
@@ -502,9 +496,13 @@
       </p>
     </div>
     <div class="estadio-visual">
-      <div class="estadio-pattern"></div>
-      <div class="estadio-nombre-big">MONUMENTAL</div>
-      <div class="estadio-icon">🏟️</div>
+      <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Estadio_Antonio_Vespucio_Liberti%2C_Buenos_Aires%2C_Argentina_%2846511339261%29.jpg/1280px-Estadio_Antonio_Vespucio_Liberti%2C_Buenos_Aires%2C_Argentina_%2846511339261%29.jpg"
+        alt="Estadio Monumental Antonio Vespucio Liberti - River Plate"
+      />
+      <div class="estadio-visual-overlay">
+        <div class="estadio-visual-caption">Estadio Monumental · Núñez, Buenos Aires · Wikimedia Commons (CC BY 2.0)</div>
+      </div>
     </div>
   </section>
 
